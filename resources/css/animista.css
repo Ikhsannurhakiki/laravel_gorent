@@ -1,0 +1,50 @@
+@keyframes tracking-in-expand {
+    0% {
+        letter-spacing: -0.5em;
+        opacity: 0;
+    }
+    40% {
+        opacity: 0.6;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+.tracking-in-expand {
+    animation: tracking-in-expand 1s cubic-bezier(0.215, 0.61, 0.355, 1) both;
+}
+
+@keyframes tracking-out-contract {
+    0% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.6;
+    }
+    100% {
+        letter-spacing: -0.5em;
+        opacity: 0;
+    }
+}
+.tracking-out-contract {
+    animation: tracking-out-contract 0.8s cubic-bezier(0.215, 0.61, 0.355, 1)
+        both;
+}
+
+.word {
+    position: absolute;
+    opacity: 0;
+}
+
+.word.show {
+    opacity: 1;
+}
+
+.tracking-in {
+    animation: tracking-in-expand 0.8s ease both;
+}
+
+.tracking-out {
+    animation: tracking-out-contract 0.8s ease both;
+}
