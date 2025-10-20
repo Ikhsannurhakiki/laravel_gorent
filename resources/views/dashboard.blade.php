@@ -5,11 +5,10 @@
 
             @if ($businesses->isEmpty())
                 {{ $title = 'Create Business' }}
-                <p class="text-gray-600 py-4">
+                <h2 class="text-2xl font-semibold text-gray-800 mb-8">
                     You have no businesses listed. Create one now.
-                </p>
+                </h2>
             @else
-                {{ $title = 'Add New Branch' }}
                 <h2 class="text-2xl font-semibold text-gray-800 mb-8">Your Branches</h2>
                 <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 justify-center">
                     @foreach ($businesses as $business)
@@ -44,5 +43,5 @@
             </div>
         </section>
     </article>
-    <x-form-create-business :title="$title" />
+    <livewire:business :title="$title" />
     </x-layout>

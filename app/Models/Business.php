@@ -15,6 +15,7 @@ class Business extends Model
         'logo',
         'phone',
         'email',
+        // 'description',
     ];
 
     public function owner()

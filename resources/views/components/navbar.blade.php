@@ -1,9 +1,9 @@
- <nav class="bg-gray-800/50">
+ <nav class="bg-gray-800 shadow">
      <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
          <div class="flex h-16 items-center justify-between">
              <div class="flex items-center">
-                 <div class="shrink-0 border bg-white   ">
-                     <img src="{{ asset('img/logo.png') }}" alt="Your Company" class="h-16 w-30" />
+                 <div class="shrink-0 border rounded-2xl bg-gray-200">
+                     <img src="{{ asset('img/logo.png') }}" alt="Your Company" class="h-13   w-25   " />
                  </div>
                  <div class="hidden md:block">
                      <div class="ml-10 flex items-baseline space-x-4">
@@ -60,10 +60,10 @@
                                  <img src="{{ Auth::user()->avatar ? asset(Auth::user()->avatar) : asset('img/default.jpg') }}"
                                      alt="{{ Auth::user()->name }}"
                                      class="size-8 rounded-full outline -outline-offset-1 outline-white/10" />
-                                 <div class="text-grey-300 font-medium text-sm ml-3"> {{ Auth::user()->name }}</div>
+                                 <div class="text-gray-300 font-medium text-sm ml-3"> {{ Auth::user()->name }}</div>
 
                                  <div class="ms-1">
-                                     <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg"
+                                     <svg class="fill-current h-4 w-4 text-gray-300" xmlns="http://www.w3.org/2000/svg"
                                          viewBox="0 0 20 20">
                                          <path fill-rule="evenodd"
                                              d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
