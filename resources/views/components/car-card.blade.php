@@ -28,7 +28,7 @@
             @if ($unit->is_available)
                 <span
                     class="py-0.5 inline-flex items-center text-xs font-medium text-green-700 bg-green-50 border border-green-200 px-2.5 rounded-full shadow-sm">
-                    Available now
+                    Available
                 </span>
             @else
                 <span

@@ -31,7 +31,7 @@ class UnitsTable extends Component
         $units = $this->business->units()
             ->where('name', 'like', "%{$this->search}%")
             ->latest()
-            ->paginate(10);
+            ->paginate(5);
 
         return view('livewire.units-table', [
             'units' => $units,
