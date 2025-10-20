@@ -69,16 +69,7 @@
                                  {{ $message }}</p>
                          @enderror />
                      </div>
-
-                     <div class="col-span-3">
-                         <label for="logo" class="block mb-2 text-sm font-medium text-gray-900">Logo</label>
-                         <input type="file" name="logo" id="logo" accept="image/*" />
-                         <p class="text-sm text-gray-500 mt-1">Upload one logo image (max 2MB)</p>
-                     </div>
                  </div>
-
-
-
              </form>
              <div class="flex justify-center     space-x-2">
                  <button type="submit"

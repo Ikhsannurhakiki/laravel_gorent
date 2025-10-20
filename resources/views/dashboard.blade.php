@@ -15,7 +15,7 @@
                     @foreach ($businesses as $business)
                         <a href="{{ route('business.show', [$user->username, $business->id]) }}">
                             <div
-                                class="p-4 bg-gray-50 border border-gray-200 rounded-lg shadow-sm text-center hover:shadow-md transition cursor-pointer">
+                                class="p-4 min-h-55 bg-gray-50 border border-gray-200 rounded-lg shadow-sm text-center hover:shadow-md transition cursor-pointer">
                                 <img class="mx-auto mb-3 w-24 h-24 rounded-full shadow-lg object-cover"
                                     src="{{ $business->logo }}" alt="{{ $business->name }} logo">
                                 <h3 class="text-lg font-semibold text-gray-900">{{ $business->name }}</h3>
@@ -30,7 +30,7 @@
             <button type="button" id="createBusinessButton" data-modal-target="createBusiness"
                 data-modal-toggle="createBusiness">
                 <div
-                    class="p-6 bg-gray-50 border border-gray-200 rounded-lg shadow-sm flex flex-col items-center justify-center hover:shadow-md transition cursor-pointer">
+                    class="p-6 min-h-55 bg-gray-50 border border-gray-200 rounded-lg shadow-sm flex flex-col items-center justify-center hover:shadow-md transition cursor-pointer">
                     <div class="w-24 h-24 rounded-full bg-blue-900 flex items-center justify-center shadow-inner mb-3">
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white" class="w-20 h-20">
                             <path fill-rule="evenodd"

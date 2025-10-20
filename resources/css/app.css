@@ -1,4 +1,6 @@
 @import "tailwindcss";
+@custom-variant dark (&:where(.dark, .dark *));
+
 @import "flowbite/src/themes/default";
 @import "./animista.css";
 

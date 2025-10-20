@@ -47,7 +47,9 @@ class BusinessController extends Controller
         return view('business-detail', [
             'user' => $user,
             'business' => $business,
-            'units' => $business->units,
+            'units' => $business->units()
+                ->latest()
+                ->paginate(3),
             'title' => 'Business Detail',
         ]);
     }

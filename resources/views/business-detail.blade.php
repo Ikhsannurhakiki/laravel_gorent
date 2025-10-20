@@ -5,7 +5,7 @@
             <!-- Sidebar -->
             <ul class="flex flex-col w-60 space-y-3 text-sm font-medium text-gray-600">
                 <li>
-                    <button data-tab="profile"
+                    <button data-tab="profile" data-tabs-target="profile" type="button"
                         class="tab-btn flex items-center w-full px-4 py-3 bg-blue-700 text-white rounded-lg">
                         <svg class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20">
                             <path
@@ -16,7 +16,7 @@
                 </li>
 
                 <li>
-                    <button data-tab="dashboard"
+                    <button data-tab="dashboard" data-tabs-target="dashboard" type="button"
                         class="tab-btn flex items-center w-full px-4 py-3 rounded-lg bg-gray-50 transition-colors">
                         <svg class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20">
                             <path
@@ -27,7 +27,7 @@
                 </li>
 
                 <li>
-                    <button data-tab="units"
+                    <button data-tab="units" data-tabs-target="units" type="button"
                         class="tab-btn flex items-center w-full px-4 py-3 rounded-lg bg-gray-50  transition-colors">
                         <svg class=" w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20">
                             <path
@@ -41,11 +41,9 @@
                 </li>
             </ul>
 
-
             <!-- Main content -->
-            <div class="flex-1 h-full    bg-gray-50 rounded-lg text-gray-700 p-4">
-                <div id="profile" class="tab-content">
-                    {{-- <h3 class="text-lg font-bold mb-2 px-5">Profile</h3> --}}
+            <div class="flex-1 h-full bg-gray-50 rounded-lg text-gray-700 p-4">
+                <div id="profile" class="tab-content hidden">
                     <x-admin-business-profile :business="$business" />
                 </div>
 
@@ -57,9 +55,9 @@
                     <h3 class="text-lg font-bold mb-2">Settings Tab</h3>
                     <p>Settings content here...</p>
                 </div>
+
                 <div id="units" class="tab-content hidden">
-                    <h3 class="text-lg font-bold mb-2 px-5">List Of Units</h3>
-                    <x-table :units="$units" />
+                    <livewire:units-table :business="$business" />
                 </div>
             </div>
         </div>
@@ -67,28 +65,56 @@
 
     @push('script')
         <script>
-            document.addEventListener('DOMContentLoaded', () => {
-                const tabButtons = document.querySelectorAll('.tab-btn');
-                const tabContents = document.querySelectorAll('.tab-content');
+            document.addEventListener("DOMContentLoaded", function() {
+                const tabButtons = document.querySelectorAll(".tab-btn");
+                const tabContents = document.querySelectorAll(".tab-content");
 
-                tabButtons.forEach(button => {
-                    button.addEventListener('click', () => {
-                        const target = button.getAttribute('data-tab');
+                if (tabButtons.length === 0) return; // <-- prevent running if no tabs exist
 
-                        // Reset styles
-                        tabButtons.forEach(btn => {
-                            btn.classList.remove('bg-blue-700', 'text-white');
-                            btn.classList.add('bg-gray-50', 'text-gray-600');
-                        });
-
-                        // Hide all tab contents
-                        tabContents.forEach(content => content.classList.add('hidden'));
-
-                        // Activate the clicked tab
-                        button.classList.add('bg-blue-700', 'text-white');
-                        button.classList.remove('bg-gray-50', 'text-gray-600');
-                        document.getElementById(target).classList.remove('hidden');
+                function activateTab(targetId) {
+                    tabButtons.forEach(btn => {
+                        btn.classList.remove("bg-blue-700", "text-white");
+                        btn.classList.add("bg-gray-50", "text-gray-600");
                     });
+
+                    tabContents.forEach(content => content.classList.add("hidden"));
+
+                    const activeBtn = document.querySelector(`[data-tabs-target="${targetId}"]`);
+                    const activeContent = document.getElementById(targetId);
+
+                    if (activeBtn && activeContent) {
+                        activeBtn.classList.add("bg-blue-700", "text-white");
+                        activeBtn.classList.remove("bg-gray-50", "text-gray-600");
+                        activeContent.classList.remove("hidden");
+                    }
+                }
+
+                tabButtons.forEach(btn => {
+                    btn.addEventListener("click", function() {
+                        const targetId = btn.getAttribute("data-tabs-target");
+                        if (targetId) {
+                            activateTab(targetId);
+                            history.replaceState(null, null, "#" + targetId);
+                        }
+                    });
+                });
+
+                const hash = window.location.hash.replace("#", "");
+                if (hash) {
+                    activateTab(hash);
+                } else {
+                    const first = tabButtons[0].getAttribute("data-tabs-target");
+                    activateTab(first);
+                }
+
+                document.addEventListener("click", function(e) {
+                    const link = e.target.closest(".pagination-wrapper a");
+                    if (link) {
+                        const currentHash = window.location.hash;
+                        if (currentHash) {
+                            link.href += currentHash;
+                        }
+                    }
                 });
             });
         </script>

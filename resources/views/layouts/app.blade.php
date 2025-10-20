@@ -21,6 +21,8 @@
     <script src="https://cdn.jsdelivr.net/npm/@tailwindplus/elements@1" type="module"></script>
     <script src="https://cdn.jsdelivr.net/npm/flowbite@2.5.1/dist/flowbite.min.js"></script>
 
+    @livewireStyles
+
     @stack('style')
 </head>
 <x-navbar />
@@ -32,6 +34,7 @@
     {{-- Javascript stacks --}}
     @stack('script')
     <script src="https://unpkg.com/filepond@^4/dist/filepond.js"></script>
+    @livewireScripts
 
 </body>
 

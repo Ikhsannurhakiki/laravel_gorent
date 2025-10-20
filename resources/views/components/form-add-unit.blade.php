@@ -1,5 +1,4 @@
-{{ $title = 'test' }}
-
+{{ $title = '' }}
 @push('style')
     <link href="https://unpkg.com/filepond@^4/dist/filepond.css" rel="stylesheet" />
     <link href="https://unpkg.com/filepond-plugin-image-preview/dist/filepond-plugin-image-preview.css" rel="stylesheet" />
@@ -77,8 +76,6 @@
                         <input type="file" name="logo" id="logo" accept="image/*" />
                         <p class="text-sm text-gray-500 mt-1">Upload one logo image (max 2MB)</p>
                     </div>
-
-
                 </div>
 
                 <div class="flex justify-center space-x-2">
