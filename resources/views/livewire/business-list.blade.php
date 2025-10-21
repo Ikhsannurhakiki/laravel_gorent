@@ -16,7 +16,7 @@
                             <div
                                 class="p-4 min-h-55 bg-gray-50 border border-gray-200 rounded-lg shadow-sm text-center hover:shadow-md transition cursor-pointer">
                                 <img class="mx-auto mb-3 w-24 h-24 rounded-full shadow-lg object-cover"
-                                    src="{{ $business->logo }}" alt="{{ $business->name }} logo">
+                                    src="{{ asset('storage/' . $business->logo) }}" alt="{{ $business->name }} logo">
                                 <h3 class="text-lg font-semibold text-gray-900">{{ $business->name }}</h3>
                                 <p class="text-sm text-gray-500">{{ $business->address }}</p>
                             </div>

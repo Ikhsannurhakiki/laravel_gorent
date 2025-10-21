@@ -25,7 +25,7 @@
             </a> --}}
         </div>
         <div class="hidden lg:mt-0 lg:col-span-5 lg:flex">
-            <img src="{{ $business->logo }}" alt="mockup">
+            <img src="{{ asset('storage/' . $business->logo) }}" alt="{{ $business->name }}">
         </div>
     </div>
 </section>
