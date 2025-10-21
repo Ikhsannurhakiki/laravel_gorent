@@ -3,40 +3,49 @@
 namespace App\Livewire;
 
 use Livewire\Component;
-use App\Models\User;
+use Livewire\Attributes\Validate;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Validation\ValidationException;
 
-class Business  extends Component
+class Business extends Component
 {
-    public $name, $email, $address, $phone;
+    // ── Form Fields ──────────────────────────────
+    #[Validate('required|string|max:255')]
+    public string $name = '';
 
-    protected $rules = [
-        'name' => 'required|string|max:255',
-        'email' => 'required|email|max:255',
-        'address' => 'required|string|max:500',
-        'phone' => 'nullable|string|max:20',
-        // 'description' => 'nullable|string|max:1000',
-    ];
-    public function createBusiness()
+    #[Validate('required|email|max:255')]
+    public string $email = '';
+
+    #[Validate('required|string|max:255')]
+    public string $address = '';
+
+    #[Validate('required|string|max:255')]
+    public string $phone = '';
+
+    // ── Create Business ───────────────────────────
+    public function createBusiness(): void
     {
-        $this->validate();
-        Auth::user()->businesses()->create([
-            'name' => $this->name,
-            'email' => $this->email,
-            'address' => $this->address,
-            'phone' => $this->phone,
-        ]);
+        try {
+            $validated = $this->validate();
 
-        session()->flash('message', 'Business created successfully.');
+            Auth::user()->businesses()->create($validated);
 
-        // Reset form fields
-        $this->reset(['name', 'email', 'address', 'phone']);
-        $this->dispatch('businessCreated'); // refresh list component
-        $this->dispatch('closeModal'); // trigger JS listener to close modal
+            // Reset form
+            $this->reset(['name', 'email', 'address', 'phone']);
 
+            // Notify front-end
+            $this->dispatch('businessCreated');
 
+            // Optional flash message
+            session()->flash('message', 'Business created successfully.');
+        } catch (ValidationException $e) {
+            // Keep modal open on validation failure
+            $this->dispatch('validationFailed');
+            throw $e;
+        }
     }
 
+    // ── Render ────────────────────────────────────
     public function render()
     {
         return view('livewire.business');

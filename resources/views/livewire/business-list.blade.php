@@ -26,7 +26,7 @@
 
             @endif
             <!-- Add Business Card -->
-            <button wire:click="$dispatch('openCreateBusiness')">
+            <button x-on:click="$dispatch('opencreatebusiness')">
                 <div
                     class="p-6 min-h-55 bg-gray-50 border border-gray-200 rounded-lg shadow-sm flex flex-col items-center justify-center hover:shadow-md transition cursor-pointer">
                     <div class="w-24 h-24 rounded-full bg-blue-900 flex items-center justify-center shadow-inner mb-3">
@@ -36,7 +36,7 @@
                                 clip-rule="evenodd" />
                         </svg>
                     </div>
-                    <p class="text-gray-600 text-md font-bold"> </p>
+                    <p class="text-gray-600 text-md font-bold">Add Business</p>
                 </div>
             </button>
 </div>
