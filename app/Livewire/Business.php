@@ -31,13 +31,14 @@ class Business  extends Component
 
         // Reset form fields
         $this->reset(['name', 'email', 'address', 'phone']);
+        $this->dispatch('businessCreated'); // refresh list component
+        $this->dispatch('closeModal'); // trigger JS listener to close modal
+
+
     }
 
     public function render()
     {
-        $businesses = Auth::user()->businesses;
-        return view('livewire.business', [
-            'businesses' => $businesses,
-        ]);
+        return view('livewire.business');
     }
 }

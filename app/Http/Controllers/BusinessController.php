@@ -13,12 +13,9 @@ class BusinessController extends Controller
      */
     public function index(User $user)
     {
-        return view('dashboard', [
-            'user' => $user,
-            'businesses' => $user->businesses,
-            'title' => 'business',
-        ]);
+        return view('dashboard', compact('user'));
     }
+
 
 
     /**

@@ -57,7 +57,7 @@
                              class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-primary-500 focus:border-primary-500"
                              placeholder="Write description here"></textarea>
                      </div>
-                     <div class=" sm:col-span-3 "><label for="description"
+                     <div class=" sm:col-span-3 "><label for="logo"
                              class="block mb-2 text-sm font-medium text-gray-900 ">Logo</label>
                          <input
                              class ="@error('avatar') bg-red-50 border border-red-500 text-red-900 placeholder-red-700 focus:ring-red-500 focus:border-red-500 @enderror"
