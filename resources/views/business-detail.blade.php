@@ -1,67 +1,66 @@
 <x-app-layout>
-    <div class="min-h-screen flex items-stretch justify-center bg-white p-4">
-        <div class="flex w-full max-w gap-6">
 
-            <!-- Sidebar -->
-            <ul class="flex flex-col w-60 space-y-3 text-sm font-medium text-gray-600">
-                <li>
-                    <button data-tab="profile" data-tabs-target="profile" type="button"
-                        class="tab-btn flex items-center w-full px-4 py-3 bg-blue-700 text-white rounded-lg">
-                        <svg class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20">
-                            <path
-                                d="M10 0a10 10 0 1 0 10 10A10.011 10.011 0 0 0 10 0Zm0 5a3 3 0 1 1 0 6 3 3 0 0 1 0-6Zm0 13a8.949 8.949 0 0 1-4.951-1.488A3.987 3.987 0 0 1 9 13h2a3.987 3.987 0 0 1 3.951 3.512A8.949 8.949 0 0 1 10 18Z" />
-                        </svg>
-                        Profile
-                    </button>
-                </li>
+    @push('style')
+        <link href="https://unpkg.com/filepond@^4/dist/filepond.css" rel="stylesheet" />
+        <link href="https://unpkg.com/filepond-plugin-image-preview/dist/filepond-plugin-image-preview.css"
+            rel="stylesheet" />
+    @endpush
 
-                <li>
-                    <button data-tab="dashboard" data-tabs-target="dashboard" type="button"
-                        class="tab-btn flex items-center w-full px-4 py-3 rounded-lg bg-gray-50 transition-colors">
-                        <svg class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20">
-                            <path
-                                d="M6.143 0H1.857A1.857 1.857 0 0 0 0 1.857v4.286C0 7.169.831 8 1.857 8h4.286A1.857 1.857 0 0 0 8 6.143V1.857A1.857 1.857 0 0 0 6.143 0Zm10 0h-4.286A1.857 1.857 0 0 0 10 1.857v4.286C10 7.169 10.831 8 11.857 8h4.286A1.857 1.857 0 0 0 18 6.143V1.857A1.857 1.857 0 0 0 16.143 0Zm-10 10H1.857A1.857 1.857 0 0 0 0 11.857v4.286C0 17.169.831 18 1.857 18h4.286A1.857 1.857 0 0 0 8 16.143v-4.286A1.857 1.857 0 0 0 6.143 10Zm10 0h-4.286A1.857 1.857 0 0 0 10 11.857v4.286c0 1.026.831 1.857 1.857 1.857h4.286A1.857 1.857 0 0 0 18 16.143v-4.286A1.857 1.857 0 0 0 16.143 10Z" />
-                        </svg>
-                        Dashboard
-                    </button>
-                </li>
+    <!-- ✅ Alpine wrapper -->
+    <div x-data="{ open: false }" x-on:opencreatebusiness.window="open = true" x-on:openupdatebusiness.window="open = true"
+        x-on:closemodal.window="open = false" x-init="Livewire.on('validationFailed', () => open = true);
+        Livewire.on('businessCreated', () => open = false);">
 
-                <li>
-                    <button data-tab="units" data-tabs-target="units" type="button"
-                        class="tab-btn flex items-center w-full px-4 py-3 rounded-lg bg-gray-50  transition-colors">
-                        <svg class=" w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20">
-                            <path
-                                d="M19 17h2c.6 0 1-.4 1-1v-3c0-.9-.7-1.7-1.5-1.9C18.7 10.6 16 10 16 10s-1.3-1.4-2.2-2.3c-.5-.4-1.1-.7-1.8-.7H5c-.6 0-1.1.4-1.4.9l-1.4 2.9A3.7 3.7 0 0 0 2 12v4c0 .6.4 1 1 1h2" />
-                            <circle cx="7" cy="17" r="2" />
-                            <path d="M9 17h6" />
-                            <circle cx="17" cy="17" r="2" />
-                        </svg>
-                        Units
-                    </button>
-                </li>
-            </ul>
+        <!-- Sidebar + Tabs -->
+        <div class="min-h-screen flex items-stretch justify-center bg-white p-4">
+            <div class="flex w-full max-w gap-6">
+                <!-- Sidebar -->
+                <ul class="flex flex-col w-60 space-y-3 text-sm font-medium text-gray-600">
+                    <li><button data-tabs-target="profile"
+                            class="tab-btn flex items-center w-full px-4 py-3 bg-green-500  hover:bg-green-700 text-black hover:text-white rounded-lg cursor-pointer">Profile</button>
+                    </li>
+                    <li><button data-tabs-target="dashboard"
+                            class="tab-btn flex items-center w-full px-4 py-3 bg-green-500  hover:bg-green-700 text-black hover:text-white rounded-lg cursor-pointer">Dashboard</button>
+                    </li>
+                    <li><button data-tabs-target="units"
+                            class="tab-btn flex items-center w-full px-4 py-3 bg-green-500  hover:bg-green-700 text-black hover:text-white rounded-lg cursor-pointer">Units</button>
+                    </li>
+                </ul>
 
-            <!-- Main content -->
-            <div class="flex-1 h-full bg-gray-50 rounded-lg text-gray-700 p-4">
-                <div id="profile" class="tab-content hidden">
-                    <x-admin-business-profile :business="$business" />
-                </div>
+                <!-- Main Content -->
+                <div class="flex-1 bg-gray-50 rounded-lg p-4">
 
-                <div id="dashboard" class="tab-content hidden">
-                    <h3 class="text-lg font-bold mb-2 px-5">Dashboard </h3>
-                </div>
+                    <!-- PROFILE TAB -->
+                    <div id="profile" class="tab-content">
+                        <!-- ✅ Bagian ini hanya Livewire profile tanpa tombol -->
+                        <livewire:business-profile :businessId="$business->id" />
 
-                <div id="settings" class="tab-content hidden">
-                    <h3 class="text-lg font-bold mb-2">Settings Tab</h3>
-                    <p>Settings content here...</p>
-                </div>
+                        <!-- ✅ Tombol di luar Livewire -->
+                        <div class="mt-4">
+                            <button x-on:click="$dispatch('openupdatebusiness', { id: {{ $business->id }} })"
+                                class="block w-full text-center p-3 border rounded-lg bg-green-500 hover:bg-green-700 cursor-pointer">
+                                Edit Business
+                            </button>
+                        </div>
+                    </div>
 
-                <div id="units" class="tab-content hidden">
-                    <livewire:units-table :business="$business" />
+                    <!-- DASHBOARD TAB -->
+                    <div id="dashboard" class="tab-content hidden">
+                        <h3 class="text-lg font-bold mb-2 px-5">Dashboard</h3>
+                    </div>
+
+                    <!-- UNITS TAB -->
+                    <div id="units" class="tab-content hidden">
+                        <livewire:units-table :business="$business" />
+                    </div>
                 </div>
             </div>
         </div>
+
+        <!-- ✅ Modal tetap di luar semua Livewire -->
+        <livewire:business />
     </div>
+
 
     @push('script')
         <script>
@@ -69,7 +68,7 @@
                 const tabButtons = document.querySelectorAll(".tab-btn");
                 const tabContents = document.querySelectorAll(".tab-content");
 
-                if (tabButtons.length === 0) return; // <-- prevent running if no tabs exist
+                if (!tabButtons.length) return;
 
                 function activateTab(targetId) {
                     tabButtons.forEach(btn => {
@@ -100,22 +99,66 @@
                 });
 
                 const hash = window.location.hash.replace("#", "");
-                if (hash) {
-                    activateTab(hash);
-                } else {
-                    const first = tabButtons[0].getAttribute("data-tabs-target");
-                    activateTab(first);
-                }
+                if (hash) activateTab(hash);
+                else activateTab(tabButtons[0].getAttribute("data-tabs-target"));
 
                 document.addEventListener("click", function(e) {
                     const link = e.target.closest(".pagination-wrapper a");
                     if (link) {
                         const currentHash = window.location.hash;
-                        if (currentHash) {
-                            link.href += currentHash;
-                        }
+                        if (currentHash) link.href += currentHash;
                     }
                 });
+            });
+        </script>
+    @endpush
+
+    @push('script')
+        <!-- ✅ JS includes -->
+        <script src="https://unpkg.com/filepond-plugin-image-preview/dist/filepond-plugin-image-preview.js"></script>
+        <script src="https://unpkg.com/filepond-plugin-file-validate-type/dist/filepond-plugin-file-validate-type.js"></script>
+        <script src="https://unpkg.com/filepond-plugin-file-validate-size/dist/filepond-plugin-file-validate-size.js"></script>
+        <script src="https://unpkg.com/filepond@^4/dist/filepond.js"></script>
+
+        <script>
+            // ✅ Register all plugins
+            FilePond.registerPlugin(
+                FilePondPluginImagePreview,
+                FilePondPluginFileValidateType,
+                FilePondPluginFileValidateSize
+            );
+
+            // ✅ FilePond for logo (single)
+            FilePond.create(document.querySelector('#logo'), {
+                acceptedFileTypes: ['image/png', 'image/jpeg', 'image/jpg'],
+                maxFileSize: '2MB',
+                labelIdle: '📷 Drag & Drop your logo or <span class="filepond--label-action">Browse</span>',
+                allowMultiple: false,
+                imagePreviewHeight: 150,
+                stylePanelAspectRatio: 1 / 1,
+            });
+
+            // ✅ FilePond for gallery (multi)
+            FilePond.create(document.querySelector('#images'), {
+                acceptedFileTypes: ['image/png', 'image/jpeg', 'image/jpg'],
+                maxFileSize: '2MB',
+                allowMultiple: true,
+                labelIdle: '🖼 Drag & Drop multiple images or <span class="filepond--label-action">Browse</span>',
+                imagePreviewHeight: 120,
+            });
+
+            // ✅ Optional: server settings
+            FilePond.setOptions({
+                credits: false,
+                server: {
+                    process: {
+                        url: '#', // replace with your upload route
+                        headers: {
+                            'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                        }
+                    },
+                    revert: null,
+                }
             });
         </script>
     @endpush

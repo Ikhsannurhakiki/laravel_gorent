@@ -32,8 +32,52 @@
     </div>
     {{-- Javascript stacks --}}
     @stack('script')
-    <script src="https://unpkg.com/filepond@^4/dist/filepond.js"></script>
     @livewireScripts
+    <script>
+        document.addEventListener('alpine:init', () => {
+            Alpine.store('modal', {
+                open: false,
+                isEdit: false
+            });
+
+            window.addEventListener('openbusinessmodalupdate', () => {
+                setTimeout(() => {
+                    Alpine.store('modal').open = true;
+                    Alpine.store('modal').isEdit = true;
+                }, 10);
+            });
+
+            window.addEventListener('openbusinessmodalcreate', () => {
+                setTimeout(() => {
+                    Alpine.store('modal').open = true;
+                    Alpine.store('modal').isEdit = false;
+                }, 10);
+            });
+
+            window.addEventListener('closemodal', () => {
+                setTimeout(() => {
+                    Alpine.store('modal').open = false;
+                    Alpine.store('modal').isEdit = false;
+                }, 150);
+            });
+
+
+            window.addEventListener('keepmodalopen', () => {
+                Alpine.store('modal').open = true;
+            });
+
+            window.addEventListener('openupdatebusiness', (event) => {
+                const id = event.detail?.id;
+                if (id) {
+                    Livewire.dispatch('openupdatebusiness', {
+                        id
+                    });
+                }
+                Alpine.store('modal').open = true;
+                Alpine.store('modal').isEdit = true;
+            });
+        });
+    </script>
 
 </body>
 

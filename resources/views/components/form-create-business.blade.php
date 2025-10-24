@@ -4,10 +4,7 @@
      {{ $sTitle = 'Business' }}
  @endif
 
- @push('style')
-     <link href="https://unpkg.com/filepond@^4/dist/filepond.css" rel="stylesheet" />
-     <link href="https://unpkg.com/filepond-plugin-image-preview/dist/filepond-plugin-image-preview.css" rel="stylesheet" />
- @endpush
+
 
  <div id="createBusiness" tabindex="-1" aria-hidden="true"
      class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
@@ -86,43 +83,3 @@
          </div>
      </div>
  </div>
-
- @push('script')
-     <script>
-         const input = document.getElementById('logo');
-         const previewPhoto = () => {
-             const file = input.files[0];
-             if (file) {
-                 const reader = new FileReader();
-                 reader.onload = function(event) {
-                     preview.setAttribute('src', event.target.result);
-                 }
-                 reader.readAsDataURL(file);
-             }
-         }
-         input.addEventListener('change', previewPhoto);
-     </script>
-     <script src="https://unpkg.com/filepond-plugin-file-validate-type/dist/filepond-plugin-file-validate-type.js"></script>
-     <script src="https://unpkg.com/filepond-plugin-image-preview/dist/filepond-plugin-image-preview.js"></script>
-     <script src="https://unpkg.com/filepond-plugin-file-validate-type/dist/filepond-plugin-file-validate-type.js"></script>
-     <script src="https://unpkg.com/filepond-plugin-file-validate-size/dist/filepond-plugin-file-validate-size.js"></script>
-     <script src="https://unpkg.com/filepond@^4/dist/filepond.js"></script>
-     <script>
-         FilePond.registerPlugin(FilePondPluginImagePreview);
-         FilePond.registerPlugin(FilePondPluginFileValidateType);
-         FilePond.registerPlugin(FilePondPluginFileValidateSize);
-
-         const inputElement = document.querySelector('#logo');
-         const pond = FilePond.create(inputElement, {
-             acceptedFileTypes: ['image/png', 'image/jpg', 'image/jpeg'],
-             maxFileSize: '2MB',
-             server: {
-                 process: '/upload',
-                 revert: null,
-                 headers: {
-                     'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                 }
-             }
-         });
-     </script>
- @endpush
