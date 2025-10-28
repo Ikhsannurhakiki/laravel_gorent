@@ -110,10 +110,6 @@
 </div>
 
 @push('script')
-    <link href="https://unpkg.com/filepond@^4/dist/filepond.min.css" rel="stylesheet">
-    <link href="https://unpkg.com/filepond-plugin-image-preview@^4/dist/filepond-plugin-image-preview.min.css"
-        rel="stylesheet">
-
     <script src="https://unpkg.com/filepond@^4/dist/filepond.min.js"></script>
     <script src="https://unpkg.com/filepond-plugin-image-preview@^4/dist/filepond-plugin-image-preview.min.js"></script>
 
@@ -121,57 +117,43 @@
         function filepondComponent() {
             return {
                 pond: null,
-                hookRegistered: false,
                 initFilePond() {
                     FilePond.registerPlugin(FilePondPluginImagePreview);
-                    this.createPond();
-
-                    if (!this.hookRegistered) {
-                        Livewire.hook('morph.updated', () => {
-                            if (!this.$refs.input._pond) {
-                                this.createPond();
-                            }
-                        });
-                        this.hookRegistered = true;
-                    }
-
-                    window.addEventListener('closemodal', () => {
-                        if (this.pond) this.pond.removeFiles();
-                    });
-                },
-                createPond() {
-                    if (this.pond) this.pond.destroy();
 
                     this.pond = FilePond.create(this.$refs.input, {
                         allowImagePreview: true,
                         imagePreviewHeight: 120,
                         server: {
                             process: (fieldName, file, metadata, load, error, progress, abort) => {
-                                this.$wire.upload('logo', file, load, error, progress);
+                                Livewire.find(this.$root.getAttribute('wire:id'))
+                                    .upload('logo', file, load, error, progress);
                             },
                             revert: (filename, load) => {
-                                this.$wire.removeUpload('logo', filename, load);
+                                Livewire.find(this.$root.getAttribute('wire:id'))
+                                    .removeUpload('logo', filename, load);
                             }
-                        },
+                        }
+                    });
+
+                    // Reset file input when modal closed
+                    window.addEventListener('closemodal', () => {
+                        if (this.pond) this.pond.removeFiles();
                     });
                 }
             }
         }
 
-
         function logoEditor(existingLogo = '') {
             return {
-                isEdit: false, // set via x-init from $store.modal.isEdit
-                editing: false, // false initially → show image first
+                isEdit: false,
+                editing: false,
                 logoUrl: existingLogo,
                 enableEdit() {
-                    this.editing = true; // show FilePond
+                    this.editing = true;
                 }
             }
         }
     </script>
-
-
 
     <style>
         @keyframes fadeIn {
