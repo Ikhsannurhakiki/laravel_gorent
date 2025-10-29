@@ -9,7 +9,7 @@
             <p class="max-w-2xl mb-6 font-bold text-gray-500 lg:mb-8 md:text-xs lg:text-sm ">
                 {{ $business->phone . ' - ' . $business->email }}
             </p>
-            <button x-on:click="$dispatch('openupdatebusiness', { id: {{ $business->id }} })" class="mt-2">
+            <button x-on:click="$dispatch('openbusinessmodal', { id: {{ $business->id }} })" class="mt-2">
                 <div class="p-3 border rounded-lg bg-gray-100 hover:bg-gray-200 cursor-pointer text-center">
                     Edit
                 </div>

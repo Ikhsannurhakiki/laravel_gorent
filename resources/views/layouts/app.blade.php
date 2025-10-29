@@ -39,6 +39,21 @@
                 open: false,
                 isEdit: false
             });
+            Alpine.store('unitModal', {
+                open: false,
+                step: 1,
+                isEdit: false,
+                next() {
+                    if (this.step < 3) this.step++
+                },
+                prev() {
+                    if (this.step > 1) this.step--
+                },
+                reset() {
+                    this.step = 1;
+                    this.open = false;
+                },
+            });
 
             window.addEventListener('openbusinessmodalupdate', () => {
                 setTimeout(() => {
@@ -61,20 +76,32 @@
                 }, 150);
             });
 
+            window.addEventListener('openunitmodalcreate', () => {
+                setTimeout(() => {
+                    Alpine.store('unitModal').open = true;
+                    Alpine.store('unitModal').isEdit = false;
+                }, 10);
+            });
+
+            window.addEventListener('openunitmodalupdate', () => {
+                setTimeout(() => {
+                    Alpine.store('unitModal').open = true;
+                    Alpine.store('unitModal').isEdit = true;
+                }, 10);
+            });
+
+
+
+            window.addEventListener('closeunitmodal', () => {
+                setTimeout(() => {
+                    Alpine.store('unitModal').open = false;
+                    Alpine.store('unitModal').isEdit = false;
+                }, 150);
+            });
+
 
             window.addEventListener('keepmodalopen', () => {
                 Alpine.store('modal').open = true;
-            });
-
-            window.addEventListener('openupdatebusiness', (event) => {
-                const id = event.detail?.id;
-                if (id) {
-                    Livewire.dispatch('openupdatebusiness', {
-                        id
-                    });
-                }
-                Alpine.store('modal').open = true;
-                Alpine.store('modal').isEdit = true;
             });
         });
     </script>

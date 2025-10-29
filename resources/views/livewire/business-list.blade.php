@@ -35,7 +35,7 @@
                       @endforeach
               @endif
               <!-- Add Business Card -->
-              <button x-on:click="$dispatch('openupdatebusiness')">
+              <button x-on:click="$dispatch('openbusinessmodal')">
                   <div
                       class="p-6 min-h-55 bg-gray-50 border border-gray-200 rounded-lg shadow-sm flex flex-col items-center justify-center hover:shadow-md transition cursor-pointer">
                       <div

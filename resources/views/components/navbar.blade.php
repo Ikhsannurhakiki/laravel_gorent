@@ -2,9 +2,8 @@
      <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
          <div class="flex h-16 items-center justify-between">
              <div class="flex items-center">
-                 <div class="shrink-0 border rounded-2xl bg-gray-200">
-                     <img src="{{ asset('img/logo.png') }}" alt="Your Company" class="h-13   w-25   " />
-                 </div>
+                 <img src="{{ asset('img/logo.png') }}" alt="Your Company" class="h-30 w-30 mb-5 " />
+
                  <div class="hidden md:block">
                      <div class="ml-10 flex items-baseline space-x-4">
                          <x-my-nav-link href="/" :current="request()->is('/')">Home</x-my-nav-link>

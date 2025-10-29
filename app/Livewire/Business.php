@@ -108,9 +108,10 @@ class Business extends Component
     }
 
     // ── Open Form ───────────────────────────────
-    #[On('openupdatebusiness')]
+    #[On('openbusinessmodal')]
     public function openForm($id = null): void
     {
+        // dd('okey');
         if ($id) {
             $this->loadBusiness($id);
             $this->isEdit = true;

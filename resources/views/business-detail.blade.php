@@ -6,59 +6,46 @@
             rel="stylesheet" />
     @endpush
 
-    <!-- ✅ Alpine wrapper -->
-    <div x-data="{ open: false }" x-on:opencreatebusiness.window="open = true" x-on:openupdatebusiness.window="open = true"
-        x-on:closemodal.window="open = false" x-init="Livewire.on('validationFailed', () => open = true);
-        Livewire.on('businessCreated', () => open = false);">
+    <!-- Sidebar + Tabs -->
+    <div class="min-h-screen flex items-stretch justify-center bg-white p-4">
+        <div class="flex w-full max-w gap-6">
+            <!-- Sidebar -->
+            <ul class="flex flex-col w-60 space-y-3 text-sm font-medium text-gray-600">
+                <li><button data-tabs-target="profile"
+                        class="tab-btn flex items-center w-full px-4 py-3 bg-green-500  hover:bg-green-700 text-black hover:text-white rounded-lg cursor-pointer">Profile</button>
+                </li>
+                <li><button data-tabs-target="dashboard"
+                        class="tab-btn flex items-center w-full px-4 py-3 bg-green-500  hover:bg-green-700 text-black hover:text-white rounded-lg cursor-pointer">Dashboard</button>
+                </li>
+                <li><button data-tabs-target="units"
+                        class="tab-btn flex items-center w-full px-4 py-3 bg-green-500  hover:bg-green-700 text-black hover:text-white rounded-lg cursor-pointer">Units</button>
+                </li>
+            </ul>
 
-        <!-- Sidebar + Tabs -->
-        <div class="min-h-screen flex items-stretch justify-center bg-white p-4">
-            <div class="flex w-full max-w gap-6">
-                <!-- Sidebar -->
-                <ul class="flex flex-col w-60 space-y-3 text-sm font-medium text-gray-600">
-                    <li><button data-tabs-target="profile"
-                            class="tab-btn flex items-center w-full px-4 py-3 bg-green-500  hover:bg-green-700 text-black hover:text-white rounded-lg cursor-pointer">Profile</button>
-                    </li>
-                    <li><button data-tabs-target="dashboard"
-                            class="tab-btn flex items-center w-full px-4 py-3 bg-green-500  hover:bg-green-700 text-black hover:text-white rounded-lg cursor-pointer">Dashboard</button>
-                    </li>
-                    <li><button data-tabs-target="units"
-                            class="tab-btn flex items-center w-full px-4 py-3 bg-green-500  hover:bg-green-700 text-black hover:text-white rounded-lg cursor-pointer">Units</button>
-                    </li>
-                </ul>
+            <!-- Main Content -->
+            <div class="flex-1 bg-gray-50 rounded-lg p-4">
+                <!-- PROFILE TAB -->
+                <div id="profile" class="tab-content">
+                    <!-- ✅ Bagian ini hanya Livewire profile tanpa tombol -->
+                    <livewire:business-profile :businessId="$business->id" />
+                </div>
 
-                <!-- Main Content -->
-                <div class="flex-1 bg-gray-50 rounded-lg p-4">
+                <!-- DASHBOARD TAB -->
+                <div id="dashboard" class="tab-content hidden">
+                    <h3 class="text-lg font-bold mb-2 px-5">Dashboard</h3>
+                </div>
 
-                    <!-- PROFILE TAB -->
-                    <div id="profile" class="tab-content">
-                        <!-- ✅ Bagian ini hanya Livewire profile tanpa tombol -->
-                        <livewire:business-profile :businessId="$business->id" />
-
-                        <!-- ✅ Tombol di luar Livewire -->
-                        <div class="mt-4">
-                            <button x-on:click="$dispatch('openupdatebusiness', { id: {{ $business->id }} })"
-                                class="block w-full text-center p-3 border rounded-lg bg-green-500 hover:bg-green-700 cursor-pointer">
-                                Edit Business
-                            </button>
-                        </div>
-                    </div>
-
-                    <!-- DASHBOARD TAB -->
-                    <div id="dashboard" class="tab-content hidden">
-                        <h3 class="text-lg font-bold mb-2 px-5">Dashboard</h3>
-                    </div>
-
-                    <!-- UNITS TAB -->
-                    <div id="units" class="tab-content hidden">
-                        <livewire:units-table :business="$business" />
-                    </div>
+                <!-- UNITS TAB -->
+                <div id="units" class="tab-content hidden">
+                    <livewire:units-table :business="$business" />
                 </div>
             </div>
         </div>
 
+
         <!-- ✅ Modal tetap di luar semua Livewire -->
         <livewire:business />
+        <livewire:unit-form />
     </div>
 
 

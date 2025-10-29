@@ -4,6 +4,7 @@ namespace App\Livewire;
 
 use App\Models\Unit;
 use Livewire\Component;
+use Livewire\Attributes\On;
 use Livewire\WithFileUploads;
 use Livewire\Attributes\Validate;
 
@@ -21,14 +22,19 @@ class UnitForm extends Component
     #[Validate('required|string|max:255')]
     public string $description = '';
 
-    #[Validate('required|string|max:255')]
-    public float $pricePerDay = 0.0;
+    #[Validate('required|numeric|min:0')]
+    public $pricePerDay = 0.0;
+
 
     #[Validate('required')]
     public bool $isAvailable = true;
 
-    #[Validate('required|string|max:255')]
+    #[Validate('nullable|image|max:2048')] // 2MB Max
     public mixed $thumbnail = null;
+
+    public string $existingThumbnailPath = '';
+    public ?int $businessId = null;
+    public bool $isEdit = false;
 
     public function createUnit()
     {
@@ -42,6 +48,7 @@ class UnitForm extends Component
 
         // Create unit in database
         Unit::create([
+            'business_id'  => $this->businessId,
             'name' => $validated['name'],
             'type' => $validated['type'],
             'description' => $validated['description'],
@@ -54,14 +61,35 @@ class UnitForm extends Component
         $this->reset(['name', 'type', 'description', 'pricePerDay', 'isAvailable', 'thumbnail']);
 
         // Optional: dispatch events for modal closing or UI refresh
-        $this->dispatch('unitCreated');
+        $this->dispatch('unitcreated');
+        $this->dispatch('closeunitmodal');
 
         session()->flash('message', 'Unit created successfully!');
     }
 
-    public function openUnitForm()
+    #[On('openunitmodal')]
+    public function openForm($businessId = null, $unitId = null): void
     {
-        dd('okey');
+        if ($unitId) {
+            // $this->loadBusiness($id);
+            $this->isEdit = true;
+        } else if ($businessId) {
+            $this->businessId = $businessId;
+            $this->resetForm();
+            $this->isEdit = false;
+        } else {
+            null;
+        }
+
+        $this->dispatch($this->isEdit ? 'openunitmodalupdate' : 'openunitmodalcreate');
+    }
+
+    // ── Reset Form ──────────────────────────────
+    public function resetForm(): void
+    {
+        $this->reset(['name', 'type', 'description', 'pricePerDay', 'isAvailable', 'thumbnail']);
+
+        $this->isEdit = false;
     }
 
     public function render()
