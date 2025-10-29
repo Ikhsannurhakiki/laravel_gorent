@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use App\Models\Business;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class BusinessController extends Controller
 {
@@ -13,6 +14,10 @@ class BusinessController extends Controller
      */
     public function index(User $user)
     {
+        // abort_unless($business->user_id === $user->id, 403, 'This business does not belong to this user.');
+
+        // Opsional: pastikan user yang login juga sama
+        abort_unless(Auth::id() === $user->id, 403, 'You cannot access other user\'s business.');
         return view('dashboard', compact('user'));
     }
 
@@ -39,17 +44,20 @@ class BusinessController extends Controller
      */
     public function show(User $user, Business $business)
     {
-        // abort_unless($business->user_id === $user->id, 403);
+        // Pastikan business benar milik user yang di-URL
+        abort_unless($business->user_id === $user->id, 403, 'This business does not belong to this user.');
+
+        // Opsional: pastikan user yang login juga sama
+        abort_unless(Auth::id() === $user->id, 403, 'You cannot access other user\'s business.');
 
         return view('business-detail', [
             'user' => $user,
             'business' => $business,
-            'units' => $business->units()
-                ->latest()
-                ->paginate(3),
+            'units' => $business->units()->latest()->paginate(3),
             'title' => 'Business Detail',
         ]);
     }
+
 
 
     /**

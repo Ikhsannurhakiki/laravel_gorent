@@ -62,7 +62,10 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-    Route::post('/business', [BusinessController::class, 'store'])->name('business.store');
+});
+
+Route::middleware(['auth', 'role:owner'])->group(function () {
+    Route::post('/business', [BusinessController::class, 'store'])->name('business.store')->name('business.modal');
     Route::get('/business/{user:username}', [BusinessController::class, 'index'])
         ->name('business.index');
     Route::get('/business/{user:username}/{business}', [BusinessController::class, 'show'])
