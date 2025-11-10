@@ -45,10 +45,10 @@ class BusinessController extends Controller
     public function show(User $user, Business $business)
     {
         // Pastikan business benar milik user yang di-URL
-        abort_unless($business->user_id === $user->id, 403, 'This business does not belong to this user.');
+        abort_unless($business->owner_id === $user->id, 403, 'This business does not belong to this user.');
 
         // Opsional: pastikan user yang login juga sama
-        abort_unless(Auth::id() === $user->id, 403, 'You cannot access other user\'s business.');
+        abort_unless(Auth::id() === $business->owner_id, 403, 'You cannot access other user\'s business.');
 
         return view('business-detail', [
             'user' => $user,

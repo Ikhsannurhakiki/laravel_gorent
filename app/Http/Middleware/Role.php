@@ -18,7 +18,7 @@ class Role
         if (!Auth::check()) {
             abort(403, 'You must be logged in.');
         }
-
+        // dd(Auth::user()->role);
         if (!in_array(Auth::user()->role, $roles)) {
             abort(403, 'You do not have permission to access this page.');
         }
