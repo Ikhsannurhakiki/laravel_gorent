@@ -3,7 +3,7 @@
 
     <!-- Image -->
     <div class="w-full h-40 bg-black flex items-center justify-center overflow-hidden">
-        <img src="{{ $unit->thumbnail }}" alt="{{ $unit->name }}" class="w-full h-full object-cover">
+        <img src="{{ $unit->getFirstMediaUrl('thumbnail') }}" alt="{{ $unit->name }}" class="w-full h-full object-cover">
     </div>
 
 

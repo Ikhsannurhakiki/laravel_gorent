@@ -1,10 +1,5 @@
 <div>
     {{ $title = '' }}
-    @push('style')
-        <link href="https://unpkg.com/filepond@^4/dist/filepond.css" rel="stylesheet" />
-        <link href="https://unpkg.com/filepond-plugin-image-preview/dist/filepond-plugin-image-preview.css"
-            rel="stylesheet" />
-    @endpush
 
     <div id="unitModal" x-data x-show="$store.unitModal.open" x-cloak wire:ignore.self>
         <div x-show="$store.unitModal.open"

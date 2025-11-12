@@ -26,6 +26,7 @@ class BusinessList extends Component
         // Fetch and convert to array so Livewire can detect updates
         $this->businesses = Auth::user()
             ->businesses()
+            ->with('media') // eager load media relation to avoid N+1 query
             ->latest()
             ->get();
     }

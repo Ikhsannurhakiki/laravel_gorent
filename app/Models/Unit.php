@@ -21,6 +21,16 @@ class Unit extends Model implements HasMedia
     use InteractsWithMedia;
     use HasTags;
 
+    public function registerMediaCollections(): void
+    {
+        $this
+            ->addMediaCollection('thumbnail')
+            ->singleFile();
+
+        $this
+            ->addMediaCollection('gallery');
+    }
+
     public function registerMediaConversions(?Media $media = null): void
     {
         $this
@@ -53,7 +63,6 @@ class Unit extends Model implements HasMedia
         'description',
         'price_per_day',
         'is_available',
-        'thumbnail',
     ];
 
     public function business()

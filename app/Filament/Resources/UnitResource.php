@@ -9,13 +9,17 @@ use Filament\Forms\Form;
 use Filament\Tables\Table;
 use Filament\Facades\Filament;
 use Filament\Resources\Resource;
+use Filament\Forms\Components\TextInput;
 use Illuminate\Database\Eloquent\Builder;
 use App\Filament\Resources\UnitResource\Pages;
+use Filament\Forms\Components\Section;
+use Filament\Forms\Components\SpatieMediaLibraryFileUpload;
+use Filament\Forms\Components\SpatieTagsInput;
 
 class UnitResource extends Resource
 {
     protected static ?string $model = Unit::class;
-    protected static ?string $navigationIcon = 'heroicon-o-home';
+    protected static ?string $navigationIcon = 'heroicon-o-truck';
     protected static ?string $navigationGroup = 'Business Management';
     protected static ?string $pluralModelLabel = 'Units';
     protected static ?string $modelLabel = 'Unit';
@@ -52,30 +56,54 @@ class UnitResource extends Resource
     public static function form(Form $form): Form
     {
         return $form->schema([
-            Forms\Components\Select::make('business_id')
-                ->label('Business')
-                ->relationship('business', 'name')
-                ->required(),
+            Section::make()->schema([
+                Forms\Components\Select::make('business_id')
+                    ->label('Business')
+                    ->relationship('business', 'name')
+                    ->required()
+                    ->options(function () {
+                        $user = Filament::auth()->user();
+                        return \App\Models\Business::where('owner_id', $user->id)
+                            ->pluck('name', 'id');
+                    }),
 
-            Forms\Components\TextInput::make('name')
-                ->required()
-                ->maxLength(255),
+                Forms\Components\TextInput::make('name')
+                    ->required()
+                    ->maxLength(255),
 
-            Forms\Components\TextInput::make('type')
-                ->required()
-                ->maxLength(255),
+                Forms\Components\TextInput::make('type')
+                    ->required()
+                    ->maxLength(255),
 
-            Forms\Components\Textarea::make('description')
-                ->columnSpanFull(),
+                SpatieTagsInput::make('tags')->type('unit_tags'),
 
-            Forms\Components\TextInput::make('price_per_day')
-                ->label('Price per day')
-                ->numeric()
-                ->required(),
+                Forms\Components\Textarea::make('description')
+                    ->columnSpanFull(),
 
-            Forms\Components\Toggle::make('is_available')
-                ->label('Available')
-                ->default(true),
+
+                Forms\Components\TextInput::make('price_per_day')
+                    ->label('Price per Day')
+                    ->prefix('IDR')
+                    // ->mask(fn($m) => $m->money(
+                    //     prefix: 'IDR ',
+                    //     thousandsSeparator: '.',
+                    //     decimalPlaces: 0,
+                    // ))
+                    ->required(),
+
+
+                Forms\Components\Toggle::make('is_available')
+                    ->label('Available')
+                    ->default(true),
+
+                SpatieMediaLibraryFileUpload::make('thumbnail')
+                    ->label('thumbnail')
+                    ->collection('thumbnail')->required(),
+
+                SpatieMediaLibraryFileUpload::make('gallery')
+                    ->label('gallery')
+                    ->collection('gallery')->multiple()
+            ])
         ]);
     }
 
