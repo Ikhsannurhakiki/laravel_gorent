@@ -58,6 +58,7 @@ class Unit extends Model implements HasMedia
     protected $with = ['business']; //eager loading biar ga nambah query di view
     protected $fillable = [
         'business_id',
+        'plate_number',
         'name',
         'type',
         'description',

@@ -67,6 +67,10 @@ class UnitResource extends Resource
                             ->pluck('name', 'id');
                     }),
 
+                Forms\Components\TextInput::make('plate_number')
+                    ->required()->unique(ignorable: fn(?Unit $record) => $record)
+                    ->maxLength(15),
+
                 Forms\Components\TextInput::make('name')
                     ->required()
                     ->maxLength(255),
@@ -114,6 +118,12 @@ class UnitResource extends Resource
     {
         return $table
             ->columns([
+
+                Tables\Columns\TextColumn::make('plate_number')
+                    ->label('Plate Number')
+                    ->sortable()
+                    ->searchable(),
+
                 Tables\Columns\TextColumn::make('business.name')
                     ->label('Business')
                     ->sortable()
@@ -125,14 +135,17 @@ class UnitResource extends Resource
                     ->searchable(),
 
                 Tables\Columns\TextColumn::make('type')
-                    ->label('Type'),
+                    ->label('Type')
+                    ->sortable()->searchable(),
 
                 Tables\Columns\TextColumn::make('price_per_day')
                     ->label('Price / Day')
+                    ->sortable()
                     ->money('IDR'),
 
                 Tables\Columns\IconColumn::make('is_available')
                     ->boolean()
+                    ->sortable()
                     ->label('Available'),
             ])
             ->filters([])
