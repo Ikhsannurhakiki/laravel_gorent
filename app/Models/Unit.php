@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Models\Business;
 use Spatie\Tags\HasTags;
 use App\Models\UnitRating;
+use App\Models\UnitType; // Tambah ini
 use Spatie\Image\Enums\Fit;
 use Filament\Facades\Filament;
 use Spatie\MediaLibrary\HasMedia;
@@ -20,6 +21,29 @@ class Unit extends Model implements HasMedia
     use HasFactory;
     use InteractsWithMedia;
     use HasTags;
+
+    protected $fillable = [
+        'business_id',
+        'type', // Ubah dari string menjadi foreign key
+        'name',
+        'description',
+        'is_available',
+        'location_name',
+        'latitude',
+        'longitude',
+        // Hapus plate_number dan price_per_day karena tidak ada di struktur baru
+    ];
+
+    protected $casts = [
+        'is_available' => 'boolean',
+        'latitude' => 'decimal:8',
+        'longitude' => 'decimal:8',
+        'created_at' => 'datetime',
+        'updated_at' => 'datetime',
+    ];
+
+    // Eager loading
+    protected $with = ['business', 'unitType'];
 
     public function registerMediaCollections(): void
     {
@@ -55,20 +79,18 @@ class Unit extends Model implements HasMedia
             });
     }
 
-    protected $with = ['business']; //eager loading biar ga nambah query di view
-    protected $fillable = [
-        'business_id',
-        'plate_number',
-        'name',
-        'type',
-        'description',
-        'price_per_day',
-        'is_available',
-    ];
-
+    /**
+     * Relationships
+     */
     public function business()
     {
         return $this->belongsTo(Business::class);
+    }
+
+    // Relationship dengan unit_types
+    public function unitType()
+    {
+        return $this->belongsTo(UnitType::class, 'type'); // 'type' adalah foreign key
     }
 
     public function ratings()
@@ -76,19 +98,66 @@ class Unit extends Model implements HasMedia
         return $this->hasMany(UnitRating::class);
     }
 
+    /**
+     * Attributes
+     */
     protected function averageRating(): Attribute
     {
         return Attribute::get(
-            fn() =>
-            round($this->ratings()->avg('stars') ?? 0, 1)
+            fn() => round($this->ratings()->avg('stars') ?? 0, 1)
         );
     }
 
     protected function reviewCount(): Attribute
     {
         return Attribute::get(
-            fn() =>
-            $this->ratings()->count()
+            fn() => $this->ratings()->count()
         );
+    }
+
+    /**
+     * Scope for available units
+     */
+    public function scopeAvailable($query)
+    {
+        return $query->where('is_available', true);
+    }
+
+    /**
+     * Scope for units by location
+     */
+    public function scopeNearby($query, $latitude, $longitude, $radius = 10)
+    {
+        return $query->whereRaw("
+            (6371 * acos(cos(radians(?)) * cos(radians(latitude)) * cos(radians(longitude) - radians(?)) + sin(radians(?)) * sin(radians(latitude)))) < ?
+        ", [$latitude, $longitude, $latitude, $radius]);
+    }
+
+    /**
+     * Accessor for thumbnail URL
+     */
+    public function getThumbnailUrlAttribute()
+    {
+        return $this->getFirstMediaUrl('thumbnail') ?: asset('images/default-thumbnail.jpg');
+    }
+
+    /**
+     * Check if unit has location data
+     */
+    public function hasLocation(): bool
+    {
+        return !is_null($this->latitude) && !is_null($this->longitude);
+    }
+
+    /**
+     * Get full location address
+     */
+    public function getFullLocationAttribute(): string
+    {
+        if ($this->location_name && $this->hasLocation()) {
+            return $this->location_name . " ({$this->latitude}, {$this->longitude})";
+        }
+
+        return $this->location_name ?: 'Location not set';
     }
 }
